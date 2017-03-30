@@ -1,23 +1,24 @@
-FROM ubuntu:trusty
+FROM phusion/baseimage:0.9.20
 MAINTAINER Fernando Mayo <fernando@tutum.co>
 
 # Install base packages
+RUN add-apt-repository ppa:ondrej/php
+
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get -yq install \
         curl \
         apache2 \
-        libapache2-mod-php5 \
-        php5-mysql \
-        php5-mcrypt \
-        php5-gd \
-        php5-curl \
-        php-pear \
-        php-apc && \
+        libapache2-mod-php5.6 \
+        php5.6-mysql \
+        php5.6-mcrypt \
+        php5.6-gd \
+        php5.6-curl \
+        php-pear && \
     rm -rf /var/lib/apt/lists/* && \
     curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-RUN /usr/sbin/php5enmod mcrypt
+
 RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf && \
-    sed -i "s/variables_order.*/variables_order = \"EGPCS\"/g" /etc/php5/apache2/php.ini
+    sed -i "s/variables_order.*/variables_order = \"EGPCS\"/g" /etc/php/5.6/apache2/php.ini
 
 ENV ALLOW_OVERRIDE **False**
 
@@ -31,4 +32,4 @@ ADD sample/ /app
 
 EXPOSE 80
 WORKDIR /app
-CMD ["/run.sh"]
+CMD ["/sbin/my_init", "/run.sh"]
