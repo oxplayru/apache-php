@@ -10,12 +10,15 @@ RUN apt-get update && \
         apache2 \
         libapache2-mod-php5.6 \
         php5.6-mysql \
+        php5.6-mbstring \
         php5.6-mcrypt \
         php5.6-gd \
         php5.6-curl \
         php-pear && \
     rm -rf /var/lib/apt/lists/* && \
     curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+RUN /usr/sbin/phpenmod -v 5.6 mbstring
 
 RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf && \
     sed -i "s/variables_order.*/variables_order = \"EGPCS\"/g" /etc/php/5.6/apache2/php.ini
