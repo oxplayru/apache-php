@@ -14,6 +14,7 @@ RUN apt-get update && \
         php5.6-mcrypt \
         php5.6-gd \
         php5.6-curl \
+        php5.6-xml \
         php-pear && \
     rm -rf /var/lib/apt/lists/* && \
     curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
